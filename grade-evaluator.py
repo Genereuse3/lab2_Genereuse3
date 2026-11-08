@@ -31,12 +31,25 @@ def load_csv_data():
         print(f"An error occurred while reading the file: {e}")
         sys.exit(1)
 
+def validate_scores(data):
+    all_ok = True
+    for row in data:
+        if row["score"] < 0 or row["score"] > 100:
+            print(f"Error: '{row['assignment']}' has a score of {row['score']}, which must be between 0 and 100.")
+            all_ok = False
+    return all_ok
+
+
+
+
 def evaluate_grades(data):
     """
     Implement your logic here.
     'data' is a list of dictionaries containing the assignment records.
     """
     print("\n--- Processing Grades ---")
+    if not validate_scores(data):
+        return
     
     # TODO: a) Check if all scores are percentage based (0-100)
     # TODO: b) Validate total weights (Total=100, Summative=40, Formative=60)
