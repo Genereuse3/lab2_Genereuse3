@@ -32,6 +32,9 @@ def load_csv_data():
         sys.exit(1)
 
 def validate_scores(data):
+    if not validate_weights(data):
+        return
+
     all_ok = True
     for row in data:
         if row["score"] < 0 or row["score"] > 100:
@@ -41,6 +44,28 @@ def validate_scores(data):
 
 
 
+
+def validate_weights(data):
+    total = 0
+    formative = 0
+    summative = 0
+    for row in data:
+        total = total + row["weight"]
+        if row["group"] == "Formative":
+            formative = formative + row["weight"]
+        elif row["group"] == "Summative":
+            summative = summative + row["weight"]
+    all_ok = True
+    if total != 100:
+        print(f"Error: total weight is {total}, but it must be 100.")
+        all_ok = False
+    if formative != 60:
+        print(f"Error: Formative weights add up to {formative}, but they must be 60.")
+        all_ok = False
+    if summative != 40:
+        print(f"Error: Summative weights add up to {summative}, but they must be 40.")
+        all_ok = False
+    return all_ok
 
 def evaluate_grades(data):
     """
