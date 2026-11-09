@@ -32,9 +32,6 @@ def load_csv_data():
         sys.exit(1)
 
 def validate_scores(data):
-    if not validate_weights(data):
-        return
-
     all_ok = True
     for row in data:
         if row["score"] < 0 or row["score"] > 100:
@@ -74,6 +71,8 @@ def evaluate_grades(data):
     """
     print("\n--- Processing Grades ---")
     if not validate_scores(data):
+        return
+    if not validate_weights(data):
         return
     
     # TODO: a) Check if all scores are percentage based (0-100)
