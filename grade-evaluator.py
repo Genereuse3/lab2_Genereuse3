@@ -64,6 +64,31 @@ def validate_weights(data):
         all_ok = False
     return all_ok
 
+def calculate_grade(data):
+    total_grade = 0
+    for row in data:
+        total_grade = total_grade + row["score"] * row["weight"] / 100
+    gpa = (total_grade / 100) * 5.0
+    return total_grade, gpa
+
+def get_category_percentages(data):
+    formative_earned = 0
+    formative_possible = 0
+    summative_earned = 0
+    summative_possible = 0
+    for row in data:
+        points = row["score"] * row["weight"] / 100
+        if row["group"] == "Formative":
+            formative_earned = formative_earned + points
+            formative_possible = formative_possible + row["weight"]
+        elif row["group"] == "Summative":
+            summative_earned = summative_earned + points
+            summative_possible = summative_possible + row["weight"]
+    formative_pct = formative_earned / formative_possible * 100
+    summative_pct = summative_earned / summative_possible * 100
+    return formative_pct, summative_pct
+
+
 def evaluate_grades(data):
     """
     Implement your logic here.
@@ -75,6 +100,16 @@ def evaluate_grades(data):
     if not validate_weights(data):
         return
     
+    total_grade, gpa = calculate_grade(data)
+    formative_pct, summative_pct = get_category_percentages(data)
+    print(f"Final Grade: {total_grade:.2f} / 100")
+    print(f"GPA: {gpa:.2f}")
+    print(f"Formative: {formative_pct:.2f}% Summative: {summative_pct:.2f}%")
+    if formative_pct >= 50 and summative_pct >= 50:
+        print("Status: PASSED")
+    else:
+        print("Status: FAILED")
+
     # TODO: a) Check if all scores are percentage based (0-100)
     # TODO: b) Validate total weights (Total=100, Summative=40, Formative=60)
     # TODO: c) Calculate the Final Grade and GPA
