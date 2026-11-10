@@ -89,6 +89,23 @@ def get_category_percentages(data):
     return formative_pct, summative_pct
 
 
+def find_resubmissions(data):
+    failed = []
+    for row in data:
+        if row["group"] == "Formative" and row["score"] < 50:
+            failed.append(row)
+    if len(failed) == 0:
+        return []
+    highest = 0
+    for row in failed:
+        if row["weight"] > highest:
+            highest = row["weight"]
+    eligible = []
+    for row in failed:
+        if row["weight"] == highest:
+            eligible.append(row)
+    return eligible
+
 def evaluate_grades(data):
     """
     Implement your logic here.
@@ -109,6 +126,13 @@ def evaluate_grades(data):
         print("Status: PASSED")
     else:
         print("Status: FAILED")
+    eligible = find_resubmissions(data)
+    if len(eligible) == 0:
+        print("Resubmission: none(no failed Formative assignments)")
+    else:
+        print("Eligible for resubmission (highest-weight failed Formative):")
+        for row in eligible:
+            print(f"  - {row['assignment']} (score {row['score']:.0f}, weight {row['weight']:.0f})")
 
     # TODO: a) Check if all scores are percentage based (0-100)
     # TODO: b) Validate total weights (Total=100, Summative=40, Formative=60)
