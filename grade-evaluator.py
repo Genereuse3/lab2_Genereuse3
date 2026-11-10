@@ -4,32 +4,82 @@ import os
 
 def load_csv_data():
     """
-    Prompts the user for a filename, checks if it exists, 
-    and extracts all fields into a list of dictionaries.
+    Prompts the user for a filename, checks it, and reads every row into a
+    list of dictionaries. Problems are reported with their row number.
     """
-    filename = input("Enter the name of the CSV file to process (e.g., grades.csv): ")
-    
+    filename = input("Enter the name of the CSV file to process (e.g., grades.csv): ").strip()
+
     if not os.path.exists(filename):
         print(f"Error: The file '{filename}' was not found.")
         sys.exit(1)
-        
+
+    required = ["assignment", "group", "score", "weight"]
     assignments = []
-    
+    problems = []
+    skipped = 0
+    line_number = 1
+
     try:
         with open(filename, mode='r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
+            if reader.fieldnames is None:
+                print(f"Error: The file '{filename}' is empty.")
+                sys.exit(1)
+
+            missing = []
+            for column in required:
+                if column not in reader.fieldnames:
+                    missing.append(column)
+            if len(missing) > 0:
+                print(f"Error: The file is missing column(s): {', '.join(missing)}.")
+                print("Expected header: assignment,group,score,weight")
+                sys.exit(1)
+
             for row in reader:
-                # Convert numeric fields to floats for calculations
+                line_number = line_number + 1
+                name = (row["assignment"] or "").strip()
+                group = (row["group"] or "").strip().capitalize()
+                score_text = (row["score"] or "").strip()
+                weight_text = (row["weight"] or "").strip()
+
+                if name == "" and group == "" and score_text == "" and weight_text == "":
+                    skipped = skipped + 1
+                    continue
+                if name == "":
+                    problems.append(f"Row {line_number}: the assignment name is empty.")
+                if group != "Formative" and group != "Summative":
+                    problems.append(f"Row {line_number} ('{name}'): group must be Formative or Summative.")
+                try:
+                    score = float(score_text)
+                    weight = float(weight_text)
+                except ValueError:
+                    problems.append(f"Row {line_number} ('{name}'): score and weight must be numbers (found score='{score_text}', weight='{weight_text}').")
+                    continue
                 assignments.append({
-                    'assignment': row['assignment'],
-                    'group': row['group'],
-                    'score': float(row['score']),
-                    'weight': float(row['weight'])
+                    'assignment': name,
+                    'group': group,
+                    'score': score,
+                    'weight': weight
                 })
-        return assignments
-    except Exception as e:
-        print(f"An error occurred while reading the file: {e}")
+    except OSError as e:
+        print(f"Error: Could not read '{filename}': {e}")
         sys.exit(1)
+    except UnicodeDecodeError:
+        print(f"Error: '{filename}' is not a readable text file.")
+        sys.exit(1)
+
+    if skipped > 0:
+        print(f"Note: {skipped} empty row(s) were skipped.")
+    if len(problems) > 0:
+        print("Error: the file has problems that must be fixed:")
+        for problem in problems:
+            print(f"  - {problem}")
+        sys.exit(1)
+    if len(assignments) == 0:
+        print("Error: the file has a header but no assignment rows.")
+        sys.exit(1)
+    return assignments
+
 
 def validate_scores(data):
     all_ok = True
