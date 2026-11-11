@@ -89,7 +89,7 @@ if summative_weight != 40:
     sys.exit(1)
 
 # 3. Calculate final grade and GPA
-# points for one assignment = score * weight / 100
+# multiply score and weight divide by 100 
 total_grade = 0
 formative_earned = 0
 summative_earned = 0
@@ -104,7 +104,7 @@ for row in assignments:
 
 gpa = (total_grade / 100) * 5.0
 
-# formative % = what we got / what was possible. Possible is 60.
+# formative is out 60 , so we take score earned divide by 60
 formative_pct = formative_earned / 60 * 100
 summative_pct = summative_earned / 40 * 100
 
@@ -126,7 +126,7 @@ for row in assignments:
 if len(failed) == 0:
     print("Resubmission: none (no failed Formative assignments)")
 else:
-    # find the biggest weight among failed ones
+    # finding the highest
     highest = 0
     for row in failed:
         if row["weight"] > highest:
