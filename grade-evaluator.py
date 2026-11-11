@@ -166,7 +166,7 @@ def evaluate_grades(data):
         return
     if not validate_weights(data):
         return
-    
+
     total_grade, gpa = calculate_grade(data)
     formative_pct, summative_pct = get_category_percentages(data)
     print(f"Final Grade: {total_grade:.2f} / 100")
@@ -178,25 +178,17 @@ def evaluate_grades(data):
         print("Status: FAILED")
     eligible = find_resubmissions(data)
     if len(eligible) == 0:
-        print("Resubmission: none(no failed Formative assignments)")
+        print("Resubmission: none (no failed Formative assignments)")
     else:
         print("Eligible for resubmission (highest-weight failed Formative):")
         for row in eligible:
             print(f"  - {row['assignment']} (score {row['score']:.0f}, weight {row['weight']:.0f})")
 
-    # TODO: a) Check if all scores are percentage based (0-100)
-    # TODO: b) Validate total weights (Total=100, Summative=40, Formative=60)
-    # TODO: c) Calculate the Final Grade and GPA
-    # TODO: d) Determine Pass/Fail status (>= 50% in BOTH categories)
-    # TODO: e) Check for failed formative assignments (< 50%)
-    #          and determine which one(s) have the highest weight for resubmission.
-    # TODO: f) Print the final decision (PASSED / FAILED) and resubmission options
-    
-    pass
+
 
 if __name__ == "__main__":
     # 1. Load the data
     course_data = load_csv_data()
-    
+
     # 2. Process the features
     evaluate_grades(course_data)
