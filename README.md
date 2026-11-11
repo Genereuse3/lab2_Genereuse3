@@ -92,7 +92,16 @@ Expected results:
 |---|---|
 | `test_bad_score.csv` | Errors for Quiz (105.0) and Group Exercise (-5.0); nothing is calculated |
 | `test_bad_weight.csv` | Errors: total weight 105.0 and Formative weights 65.0 |
-| `test_fail.csv` | 46.00, GPA 2.30, Summative 30.00%, FAILED, two resubmissions |
+| `test_bad_split.csv` | Errors: Formative 80.0 and Summative 20.0 (the total is still 100) |
+| `test_fail.csv` | 45.00, GPA 2.25, Formative 55.00%, Summative 30.00%, FAILED, two resubmissions |
+| `test_no_resubmit.csv` | 79.00, GPA 3.95, PASSED, no resubmission |
+| `test_empty.csv` | The file is empty |
+| `test_header_only.csv` | No assignment rows |
+| `test_missing_column.csv` | Missing column: weight |
+| `test_text_score.csv` | Row 2 ('Quiz'): found score='abc' |
+| `test_empty_score.csv` | Row 2 ('Quiz'): found score='' |
+| `test_blank_row.csv` | 1 empty row skipped, then the normal sample result |
+| `test_bad_group.csv` | Row 2 ('Quiz'): group must be Formative or Summative |
 | `test_all_50.csv` | 50.00, GPA 2.50, exactly 50% in both categories: PASSED, no resubmission |
 
 For organizer.sh, run it in a copy of the folder: the first run creates archive/ and leaves an empty grades.csv; a second run adds a second line to organizer.log; running it with no grades.csv prints an error
