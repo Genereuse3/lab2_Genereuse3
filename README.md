@@ -51,7 +51,7 @@ Eligible for resubmission (highest-weight failed Formative):
 
 ## How it works
 
-1. **Load the file.** Each row becomes a record with the assignment name, group, score and weight. Problems in the file are reported before any calculation (see the edge-case table).
+1. **Load the file.** Each row becomes a record with the assignment name, group, score and weight. Problems in the file are reported before any calculation .
 2. **Validate the scores.** Every score must be between 0 and 100 (0 and 100 are allowed). Each bad score is reported by assignment name.
 3. **Validate the weights.** All weights must add up to exactly 100, the Formative weights to 60, and the Summative weights to 40. Each failed check is reported with the real total.
 4. **Final grade and GPA.** Each assignment contributes `score x weight / 100` points. The Final Grade is the sum of these points (out of 100) and `GPA = (Final Grade / 100) x 5.0`.
