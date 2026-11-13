@@ -9,6 +9,10 @@ if not os.path.exists(filename):
     print(f"Error: The file '{filename}' was not found.")
     sys.exit(1)
 
+if not os.path.isfile(filename):
+    print(f"Error: '{filename}' is not a file.")
+    sys.exit(1)
+
 assignments = []
 
 with open(filename, mode='r', encoding='utf-8') as file:
@@ -16,6 +20,16 @@ with open(filename, mode='r', encoding='utf-8') as file:
 
     if reader.fieldnames is None:
         print(f"Error: The file '{filename}' is empty.")
+        sys.exit(1)
+
+    required = ["assignment", "group", "score", "weight"]
+    missing = []
+    for column in required:
+        if column not in reader.fieldnames:
+            missing.append(column)
+    if len(missing) > 0:
+        print(f"Error: The file is missing column(s): {', '.join(missing)}.")
+        print("Expected header: assignment,group,score,weight")
         sys.exit(1)
 
     skipped = 0
