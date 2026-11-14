@@ -98,8 +98,8 @@ Expected results:
 | `test_empty.csv` | The file is empty |
 | `test_header_only.csv` | No assignment rows |
 | `test_missing_column.csv` | Missing column: weight |
-| `test_text_score.csv` | Row 2 ('Quiz'): found score='abc' |
-| `test_empty_score.csv` | Row 2 ('Quiz'): found score='' |
+| `test_text_score.csv` | Row 2 ('Quiz'): score and weight must be numbers |
+| `test_empty_score.csv` | Row 2 ('Quiz'): score or weight is empty |
 | `test_blank_row.csv` | 1 empty row skipped, then the normal sample result |
 | `test_bad_group.csv` | Row 2 ('Quiz'): group must be Formative or Summative |
 | `test_all_50.csv` | 50.00, GPA 2.50, exactly 50% in both categories: PASSED, no resubmission |
@@ -123,3 +123,12 @@ printf 'assignment,group,score,weight\nQuiz,Formative,50,20\nGroup Exercise,Form
 ```
 
 A file with a missing column prints which columns are missing.
+
+More test files:
+
+```
+printf 'assignment,group,score,weight\n' > test_header_only.csv
+sed '2s/,85,/,abc,/' grades.csv > test_text_score.csv
+sed '2s/,85,/,,/' grades.csv > test_empty_score.csv
+sed '2a ,,,' grades.csv > test_blank_row.csv
+```
