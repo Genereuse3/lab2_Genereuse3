@@ -152,3 +152,4 @@ else:
     for row in failed:
         if row["weight"] == highest:
             print(f"  - {row['assignment']} (score {row['score']:.0f}, weight {row['weight']:.0f})")
+# grade-evaluator
