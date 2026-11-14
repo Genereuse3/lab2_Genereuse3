@@ -92,7 +92,7 @@ Expected results:
 |---|---|
 | `test_bad_score.csv` | Error for Quiz (105.0); the program stops |
 | `test_bad_weight.csv` | Error: total weight is 105.0; the program stops |
-| `test_bad_split.csv` | Error: Formative weights add up to 80.0 (the total is still 100); the program stops |
+| `test_bad_split.csv` | Error: Formative weights add up to 80.0, but they must be 60. |
 | `test_fail.csv` | 46.00, GPA 2.30, Formative 56.67%, Summative 30.00%, FAILED, two resubmissions |
 | `test_no_resubmit.csv` | 79.00, GPA 3.95, PASSED, no resubmission |
 | `test_empty.csv` | The file is empty |
