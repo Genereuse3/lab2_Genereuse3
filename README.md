@@ -103,6 +103,8 @@ Expected results:
 | `test_blank_row.csv` | 1 empty row skipped, then the normal sample result |
 | `test_bad_group.csv` | Row 2 ('Quiz'): group must be Formative or Summative |
 | `test_all_50.csv` | 50.00, GPA 2.50, exactly 50% in both categories: PASSED, no resubmission |
+| `test_form_49.csv` | 69.40, GPA 3.47, Formative 49.00%, FAILED, three tied resubmissions |
+| `test_pass_but_resub.csv` | 56.00, GPA 2.80, Formative 50.00%, PASSED, but Quiz (30) is still eligible |
 
 For organizer.sh, run it in a copy of the folder: the first run creates archive/ and leaves an empty grades.csv; a second run adds a second line to organizer.log; running it with no grades.csv prints an error
 
@@ -111,7 +113,7 @@ For organizer.sh, run it in a copy of the folder: the first run creates archive/
 ## Create the test files
 
 ```
-sed 's/,85,/,105,/; s/,40,/,-5,/' grades.csv > test_bad_score.csv
+sed '2s/,85,/,105,/' grades.csv > test_bad_score.csv
 sed '2s/,20$/,25/' grades.csv > test_bad_weight.csv
 sed '5s/Summative/Formative/' grades.csv > test_bad_split.csv
 sed '5s/,70,/,30,/; 6s/,60,/,30,/' grades.csv > test_fail.csv
@@ -120,6 +122,8 @@ printf '' > test_empty.csv
 sed '2s/Formative/Homework/' grades.csv > test_bad_group.csv
 printf 'assignment,group,score\nQuiz,Formative,85\n' > test_missing_column.csv
 printf 'assignment,group,score,weight\nQuiz,Formative,50,20\nGroup Exercise,Formative,50,20\nFunctions Lab,Formative,50,20\nMidterm,Summative,50,20\nFinal,Summative,50,20\n' > test_all_50.csv
+printf 'assignment,group,score,weight\nQuiz,Formative,49,20\nGroup Exercise,Formative,49,20\nFunctions Lab,Formative,49,20\nMidterm,Summative,100,20\nFinal,Summative,100,20\n' > test_form_49.csv
+printf 'assignment,group,score,weight\nQuiz,Formative,30,20\nGroup Exercise,Formative,70,20\nFunctions Lab,Formative,50,20\nMidterm,Summative,70,20\nFinal,Summative,60,20\n' > test_pass_but_resub.csv
 ```
 
 A file with a missing column prints which columns are missing.
