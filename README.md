@@ -1,4 +1,4 @@
-# lab2_ALU Transcript Generator
+# lab2_Genereuse3
 
 This is my Python program and a Bash script for lab 2. It checks grades from a CSV file and calculates the final grade
 
@@ -93,7 +93,7 @@ Expected results:
 | `test_bad_score.csv` | Error for Quiz (105.0); the program stops |
 | `test_bad_weight.csv` | Error: total weight is 105.0; the program stops |
 | `test_bad_split.csv` | Error: Formative weights add up to 80.0 (the total is still 100); the program stops |
-| `test_fail.csv` | 45.00, GPA 2.25, Formative 55.00%, Summative 30.00%, FAILED, two resubmissions |
+| `test_fail.csv` | 46.00, GPA 2.30, Formative 56.67%, Summative 30.00%, FAILED, two resubmissions |
 | `test_no_resubmit.csv` | 79.00, GPA 3.95, PASSED, no resubmission |
 | `test_empty.csv` | The file is empty |
 | `test_header_only.csv` | No assignment rows |
